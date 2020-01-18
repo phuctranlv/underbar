@@ -98,6 +98,23 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    var uniqueArray = [];
+    if (!isSorted) {
+      _.each(array, function(value, index) {
+        if (_.indexOf(uniqueArray, value) === -1) {
+          uniqueArray.push(value);
+        }
+      })
+      return uniqueArray;
+    }
+    var transformedArray = [];
+    _.each(array, function(value, key) {
+      if (_.indexOf(transformedArray, iterator(value)) === -1) {
+        transformedArray.push(iterator(value));
+        uniqueArray.push(value);
+      }
+    })
+    return uniqueArray;
   };
 
 
