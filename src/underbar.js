@@ -212,6 +212,23 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    var onePassed = false;
+    _.every(collection, function(value) {
+      if (iterator === undefined) {
+        if (value) {
+          onePassed = true;
+          return true;
+        } else {
+          return false;
+        }
+      }
+      if (iterator(value)) {
+        onePassed = true;
+      } else {
+        return true; // this is such a forceful thing to do... in order to use the every method
+      }
+    })
+    return onePassed;
   };
 
 
