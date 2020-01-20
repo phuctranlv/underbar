@@ -316,13 +316,29 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-    var storage = {};
+    // method 1: using object to store data
+    // var storage = {};
+    // return function() {
+    //   var args = JSON.stringify(arguments);
+    //   if (!storage.hasOwnProperty(args)) {
+    //     storage[args] = func.apply(this, arguments);
+    //   }
+    //   return storage[args];
+    // }
+
+    // method 2: using arrays to store data
+    var givenArguments = [];
+    var results = [];
     return function() {
       var args = JSON.stringify(arguments);
-      if (!storage.hasOwnProperty(args)) {
-        storage[args] = func.apply(this, arguments);
+      var hasBeenCalled = _.contains(givenArguments, args);
+      if (!hasBeenCalled) {
+        console.log('givenArguments before function call:', givenArguments);
+        results.push(func.apply(this, arguments));
+        givenArguments.push(args);
       }
-      return storage[args];
+      var resultIndex = _.indexOf(givenArguments, args);
+      return results[resultIndex];
     }
   };
 
